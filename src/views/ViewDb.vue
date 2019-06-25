@@ -16,10 +16,6 @@
     export default {
         name: "view-db",
 
-        data: () => ({
-
-        }),
-
         computed: {
             planets: function() {
                 return store.getters.getPlanets
