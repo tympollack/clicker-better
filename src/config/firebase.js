@@ -1,28 +1,34 @@
-import * as Firebase from 'firebase/app'
+import firebase from 'firebase/app'
 import 'firebase/firestore'
-import * as admin from 'firebase-admin'
+import firebaseConfig from '../config/firebase-key-no-commit'
+import vars from './vars'
 
-function initFirebase () {
-    const serviceAccount = require("path/to/serviceAccountKey.json")
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://clicker-867.firebaseio.com"
-    });
-    return new Promise((resolve, reject) => {
-        Firebase.firestore().enablePersistence()
-            .then(resolve)
-            .catch(err => {
-                if (err.code === 'failed-precondition') {
-                    reject(err)
-                    // Multiple tabs open, persistence can only be
-                    // enabled in one tab at a a time.
-                } else if (err.code === 'unimplemented') {
-                    reject(err)
-                    // The current browser does not support all of
-                    // the features required to enable persistence
-                }
-            })
-    })
+firebase.initializeApp(firebaseConfig)
+
+const collections = {
+    [vars.collections.planets]: firebase.firestore().collection(vars.collections.planets),
+    [vars.collections.users]: firebase.firestore().collection(vars.collections.users),
 }
 
-export { Firebase, initFirebase }
+const getAllInCollection = (collection) => {
+    const coll = []
+    collection
+        .get()
+        .then(docsRef => {
+            docsRef.forEach(doc => {
+                const obj = doc.data()
+                obj.id = doc.id
+                coll.push(obj)
+            })
+        })
+        .catch(e => {
+            console.log('error getting collection', e)
+        })
+    return coll
+}
+
+const getPlanets = () => getAllInCollection(collections.planets)
+
+const getUsers = () => getAllInCollection(collections.users)
+
+export { firebase , getPlanets, getUsers}

@@ -19,3 +19,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+/src/config/firebase-key-no-commit.json

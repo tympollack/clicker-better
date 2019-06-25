@@ -26,7 +26,7 @@
             </v-list>
         </v-navigation-drawer>
 
-        <v-content>
+        <v-content class="secondary">
             <transition name="component-fade" mode="out-in">
                 <component :is="activeView"></component>
             </transition>
