@@ -1,38 +1,64 @@
 <template>
-  <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-toolbar>
+    <v-app>
+        <v-navigation-drawer
+                permanent
+                fixed
+                width="100px"
+                dark
+                app
+                hide-overlay
+                stateless
+        >
+            <v-list v-once dense>
+                <v-list-tile
+                        v-for="view in views"
+                        :key="view.id"
+                        ripple
+                        :value="activeView === view.id"
+                        active-class="blue--text"
+                >
+                    <v-list-tile-content>
+                        <v-list-tile-title
+                                @click.stop="activeView = view.id"
+                        >{{ view.displayName }}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
 
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-  </v-app>
+        <v-content>
+            <transition name="component-fade" mode="out-in">
+                <component :is="activeView"></component>
+            </transition>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+    import ViewDb from './views/ViewDb'
+    import ViewPlanet from './views/ViewPlanet'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  },
-  data () {
-    return {
-      //
+    export default {
+        name: 'App',
+        components: {
+            ViewDb,
+            ViewPlanet
+        },
+        data: () => ({
+            activeView: 'view-db',
+            views: [
+                { id: 'view-db', displayName: 'DB Viewer'},
+                { id: 'view-planet', displayName: 'Planet'},
+            ]
+        })
     }
-  }
-}
 </script>
+
+<style>
+    /*html, body {*/
+    /*    -webkit-user-select: none;*/
+    /*    -moz-user-select: none;*/
+    /*    -ms-user-select: none;*/
+    /*    user-select: none;*/
+    /*}*/
+</style>
