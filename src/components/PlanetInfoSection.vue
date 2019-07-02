@@ -1,10 +1,11 @@
 <template>
-    <div :id="id" class="planet-info">
+    <div class="planet-info pr-3">
+        <p>{{ title }}</p>
         <planet-info-item
                 v-for="item in items"
                 :key="item.name"
                 :name="item.name"
-                :amount="item.amount"
+                :value="item.value"
         ></planet-info-item>
     </div>
 </template>
@@ -15,14 +16,14 @@
         name: "PlanetInfoSection",
         components: {PlanetInfoItem},
         props: {
-            id: {
-                type: String,
-                required: true
-            },
-
             items: {
                 type: Array,
                 default: () => []
+            },
+
+            title: {
+                type: String,
+                required: true
             }
         }
     }

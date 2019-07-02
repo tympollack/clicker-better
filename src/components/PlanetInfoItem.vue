@@ -1,5 +1,5 @@
 <template>
-    <div :class="{ 'alert' : alert }">{{ name }}: {{ amount }}</div>
+    <div :class="{ 'alert' : alert }">{{ name }}: {{ value }}</div>
 </template>
 
 <script>
@@ -12,7 +12,7 @@
                 required: true
             },
 
-            amount: {
+            value: {
                 type: Number,
                 default: 0
             },

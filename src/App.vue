@@ -9,7 +9,7 @@
                 hide-overlay
                 stateless
         >
-            <v-list v-once dense>
+            <v-list>
                 <v-list-tile
                         v-for="view in views"
                         :key="view.id"
@@ -19,7 +19,7 @@
                 >
                     <v-list-tile-content>
                         <v-list-tile-title
-                                @click.stop="activeView = view.id"
+                                @click="activeView = view.id"
                         >{{ view.displayName }}</v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>

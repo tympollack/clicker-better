@@ -1,6 +1,9 @@
+<!--
+            i don't think this is being used anymore
+-->
+
 <template>
     <planet-info-section
-        :id="id"
         :items="items"
     ></planet-info-section>
 </template>
@@ -13,9 +16,7 @@
         components: {PlanetInfoSection},
 
         data: () => ({
-            id: 'planet-tiles',
             items: [
-                { name: 'id', amount: 0 },
                 { name: 'total', amount: 0 },
                 { name: 'pollution', amount: 0 },
                 { name: 'waste', amount: 0 },
