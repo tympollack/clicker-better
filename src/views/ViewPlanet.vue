@@ -3,55 +3,76 @@
         <div>planet overview</div>
         <div>{{ planet }}</div>
 
-        <planet-info-section
-                title="stats"
-                :items="statsInfos"
-        ></planet-info-section>
+        <div>
+            <planet-info-section
+                    title="stats"
+                    :items="statsInfos"
+            ></planet-info-section>
 
-        <planet-info-section
-                title="player resources"
-                :items="playerResourcesInfos"
-        ></planet-info-section>
+            <planet-info-section
+                    title="discovered resources"
+                    :items="discoveredResourcesInfos"
+            ></planet-info-section>
 
-        <planet-info-section
-                title="planetary resources"
-                :items="planetResourcesInfos"
-        ></planet-info-section>
+            <planet-info-section
+                    title="planetary resources"
+                    :items="planetResourcesInfos"
+            ></planet-info-section>
+        </div>
+
+        <div>
+            <resource-panel
+
+            ></resource-panel>
+        </div>
     </div>
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     import store from '../store/store'
     import PlanetInfoSection from "../components/PlanetInfoSection"
+    import ResourcePanel from "../components/ResourcePanel"
 
     export default {
-        components: {PlanetInfoSection},
-        name: "view-planet",
-
-        data () {
-            return {
-            }
-        },
+        components: {ResourcePanel, PlanetInfoSection},
+        name: 'view-planet',
 
         computed: {
+            discoveredResourcesInfos: function() {
+                return this.planet
+                    ? this.populatePlanetInfoSectionItemsFromObject(this.planet.discoveredResources)
+                    : []
+            },
+
             planetResourcesInfos: function() {
-                return this.populatePlanetInfoSectionItemsFromObject(this.planet.planetResources)
+                return this.planet
+                    ? this.populatePlanetInfoSectionItemsFromObject(this.planet.planetResources)
+                    : []
             },
 
             playerResourcesInfos: function() {
-                return this.populatePlanetInfoSectionItemsFromObject(this.planet.playerResources)
+                return this.planet
+                    ? this.populatePlanetInfoSectionItemsFromObject(this.planet.playerResources)
+                    : []
             },
 
             statsInfos: function() {
-                return this.populatePlanetInfoSectionItemsFromObject(this.planet.stats)
+                return this.planet
+                    ? this.populatePlanetInfoSectionItemsFromObject(this.planet.stats)
+                    : []
             },
 
             planet: function() {
-                return { "land": 13467285630348, "owner": "test", "planetResources": { "coal": 226831888424, "copper": 44287829296, "iron": 2569039358888, "oil": 4953808281694, "stone": 370754569962, "uranium": 2543651837, "water": 3096176259701, "wood": 14761391674200 }, "playerResources": { "coal": 0, "copper": 0, "iron": 0, "oil": 0, "stone": 0, "uranium": 0, "water": 0, "wood": 0 }, "stats": { "buildings": 0, "damagedLand": 0, "discoveredLand": 0, "logistics": 0, "pollution": 0, "storage": 0, "usableLand": 0, "waste": 0 }, "id": "1" }
+                return store.getters.getPlanet
             }
         },
 
         methods: {
+            ...mapActions({
+                getActivePlanet: 'getActivePlanet'
+            }),
+
             populatePlanetInfoSectionItemsFromObject: (obj) => {
                 const infos = []
                 for (const prop in obj) {
@@ -60,6 +81,10 @@
 
                 return infos
             }
+        },
+
+        created () {
+            this.getActivePlanet()
         }
     }
 </script>

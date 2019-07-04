@@ -7,31 +7,34 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
 
     state: {
+        config: {},
         users: [],
-        user: { id: 'qv7dcJ3yPs5BEe1b5Nu3' },
+        user: { "activePlanet": "1", "ownedPlanets": [ "1" ], "username": "test", "id": "qv7dcJ3yPs5BEe1b5Nu3" },
         planets: [],
         planet: null,
     },
 
     getters: {
+        getConfig: state => state.config,
         getPlanets: state => state.planets,
+        getPlanet: state => state.planet,
         getUsers: state => state.users,
         getUser: state => state.user,
-
-        getPlanet: async state => {
-            return state.planet
-                || fsFuncs.getActivePlanetForUser(state.user)
-                || fsFuncs.getUserPlanets(state.user)
-        }
     },
 
-
     mutations: {
+        setConfig: (state, config) => { state.config = config },
         setPlanets: (state, planets) => { state.planets = planets },
+        setPlanet: (state, planet) => { state.planet = planet },
         setUsers: (state, users) => { state.users = users }
     },
 
     actions: {
+        refreshConfig: async ({ commit }) => {
+            // await fsFuncs.createBuildingObjectsInFs()
+            commit('setConfig', fsFuncs.getConfig())
+        },
+
         refreshPlanets: ({ commit }) => {
             commit('setPlanets', fsFuncs.getPlanets())
         },
@@ -39,6 +42,13 @@ const store = new Vuex.Store({
         refreshUsers: ({ commit }) => {
             commit('setUsers', fsFuncs.getUsers())
         },
+
+        getActivePlanet: async ({ commit, state }) => {
+            const userId = state.user.id
+            const planet = await fsFuncs.getActivePlanetForUser(userId)
+                || await fsFuncs.getUserPlanets(userId)
+            commit('setPlanet', planet)
+        }
     }
 })
 

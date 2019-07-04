@@ -1,10 +1,9 @@
 <template>
-    <v-app>
+    <v-app dark>
         <v-navigation-drawer
                 permanent
                 fixed
                 width="100px"
-                dark
                 app
                 hide-overlay
                 stateless
