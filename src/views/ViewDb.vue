@@ -9,7 +9,8 @@
                     <div>land: {{ planet.land }}</div>
                     <div>resources:
                         <div class="ml-3">
-                            <div v-for="resource in Object.keys(planet.planetResources)" :key="`${planet.id}-${resource}`">
+                            <div v-for="resource in Object.keys(planet.planetResources)"
+                                 :key="`${planet.id}-${resource}`">
                                 <div>{{ resource }}: {{ planet.planetResources[resource] }}</div>
                             </div>
                         </div>
@@ -28,7 +29,37 @@
         <v-divider class="my-5"></v-divider>
 
         <p>users</p>
-        <div v-for="user in users" :key="user.id">{{ user }}</div>
+        <div v-for="user in users" :key="user.id">
+            <div class="ma-3">
+                {{ user.id }}
+                <div class="ml-3">
+                    <div>username: {{ user.username }}</div>
+                    <div>active planet id: {{ user.activePlanet }}</div>
+                    <div>owned planets: {{ user.ownedPlanets }}</div>
+                    <div>resources:
+                        <div class="ml-3">
+                            <div v-for="planetId in Object.keys(user.resources)"
+                                 :key="`${user.id}-${planetId}`">
+                                {{ planetId }}
+                                <div class="ml-3">
+                                    <div v-for="resource in Object.keys(user.resources[planetId])"
+                                         :key="`${user.id}-${planetId}-${resource}`">
+                                        <div>{{ resource }}: {{ user.resources[planetId][resource] }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>stats:
+                        <div class="ml-3">
+                            <div v-for="stat in Object.keys(user.stats)" :key="`${user.id}-${stat}`">
+                                <div>{{ stat }}: {{ user.stats[stat] || 0 }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <v-divider class="my-5"></v-divider>
 
@@ -60,22 +91,22 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
+    import {mapActions} from 'vuex'
     import store from '../store/store'
 
     export default {
         name: "view-db",
 
         computed: {
-            config: function() {
+            config: function () {
                 return store.getters.getConfig
             },
 
-            planets: function() {
+            planets: function () {
                 return store.getters.getPlanets
             },
 
-            users: function() {
+            users: function () {
                 return store.getters.getUsers
             }
         },
@@ -88,7 +119,7 @@
             })
         },
 
-        created () {
+        created() {
             if (!store.getters.getConfig.length) this.refreshConfig()
             if (!store.getters.getPlanets.length) this.refreshPlanets()
             if (!store.getters.getUsers.length) this.refreshUsers()
