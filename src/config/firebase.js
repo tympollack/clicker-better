@@ -1,16 +1,18 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import firebaseConfig from '../config/firebase-key-no-commit'
-import vars from './vars'
+import { collections, config } from './vars'
 import { buildingObjects } from '../config/building-objects-old'
 
 
 firebase.initializeApp(firebaseConfig)
 
-const collections = {
-    [vars.collections.config]: firebase.firestore().collection(vars.collections.config),
-    [vars.collections.planets]: firebase.firestore().collection(vars.collections.planets),
-    [vars.collections.users]: firebase.firestore().collection(vars.collections.users),
+const firestore = firebase.firestore()
+
+const fsCollections = {
+    [collections.config]: firestore.collection(collections.config),
+    [collections.planets]: firestore.collection(collections.planets),
+    [collections.users]: firestore.collection(collections.users),
 }
 
 const createBuildingObjectsInFs = async () => {
@@ -35,13 +37,13 @@ const createBuildingObjectsInFs = async () => {
         else buildingObjectsObj[prop] = obj
     }
     
-    const coll = collections[vars.collections.config]
+    const coll = fsCollections[collections.config]
     try {
-        await coll.doc(vars.config.buildingObjects).set(buildingObjectsObj)
-        await coll.doc(vars.config.radarObjects).set(radarObjectsObj)
-        await coll.doc(vars.config.excavationObjects).set(excavationObjectsObj)
-        await coll.doc(vars.config.wasteCleaningObjects).set(wasteCleaningObjectsObj)
-        await coll.doc(vars.config.pollutionCleaningObjects).set(pollutionCleaningObjectsObj)
+        await coll.doc(config.buildingObjects).set(buildingObjectsObj)
+        await coll.doc(config.radarObjects).set(radarObjectsObj)
+        await coll.doc(config.excavationObjects).set(excavationObjectsObj)
+        await coll.doc(config.wasteCleaningObjects).set(wasteCleaningObjectsObj)
+        await coll.doc(config.pollutionCleaningObjects).set(pollutionCleaningObjectsObj)
     } catch(e) {
         console.error('something bad happened on the way to the forum', e)
     }
@@ -78,15 +80,15 @@ const getAllInCollection = (collection) => {
     return coll
 }
 
-const getConfig = () => getAllInCollection(collections[vars.collections.config])
+const getConfig = () => getAllInCollection(fsCollections.config)
 
-const getPlanets = () => getAllInCollection(collections.planets)
+const getPlanets = () => getAllInCollection(fsCollections.planets)
 
-const getUsers = () => getAllInCollection(collections.users)
+const getUsers = () => getAllInCollection(fsCollections.users)
 
 const getPlanetById = async planetId => {
     try {
-        return await getObjectById(collections.planets, planetId)
+        return await getObjectById(fsCollections.planets, planetId)
     } catch(e) {
         console.error('error getting planet', planetId, e)
         throw e
@@ -95,7 +97,7 @@ const getPlanetById = async planetId => {
 
 const getUserById = async userId => {
     try {
-        return await getObjectById(collections.users, userId)
+        return await getObjectById(fsCollections.users, userId)
     } catch(e) {
         console.error('error getting user', userId, e)
         throw e
