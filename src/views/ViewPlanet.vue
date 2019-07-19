@@ -1,69 +1,91 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div class="container">
-        <div>planet overview</div>
-        <div>{{ planet }}</div>
+        <v-expansion-panel>
+            <v-expansion-panel-content>
+                <template v-slot:header>
+                    <div>planet overview</div>
+                </template>
+                <v-card>{{ planet }}</v-card>
+            </v-expansion-panel-content>
+        </v-expansion-panel>
 
-        <div>
-            <planet-info-section
-                    title="stats"
-                    :items="statsInfos"
-            ></planet-info-section>
+        <v-layout fill-height>
+            <v-flex xs3>
+                <resource-panel
+                        color="success"
+                        :resources="manualResources"
+                ></resource-panel>
+            </v-flex>
 
-            <planet-info-section
-                    title="discovered resources"
-                    :items="discoveredResourcesInfos"
-            ></planet-info-section>
+            <v-flex xs9>
+                <planet-info-section
+                        title="stats"
+                        :items="statsInfos"
+                ></planet-info-section>
 
-            <planet-info-section
-                    title="planetary resources"
-                    :items="planetResourcesInfos"
-            ></planet-info-section>
-        </div>
+                <planet-info-section
+                        title="discovered resources"
+                        :items="discoveredResourcesInfos"
+                ></planet-info-section>
 
-        <div>
-            <resource-panel
+                <planet-info-section
+                        title="planetary resources"
+                        :items="planetResourcesInfos"
+                ></planet-info-section>
+            </v-flex>
+        </v-layout>
 
-            ></resource-panel>
-        </div>
     </div>
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
+    import {mapActions} from 'vuex'
     import store from '../store/store'
     import PlanetInfoSection from "../components/PlanetInfoSection"
     import ResourcePanel from "../components/ResourcePanel"
+    import {manualResources} from '../config/vars'
 
     export default {
         components: {ResourcePanel, PlanetInfoSection},
         name: 'view-planet',
 
         computed: {
-            discoveredResourcesInfos: function() {
+            manualResources: () => {
+                const ret = []
+                for (const resource of manualResources) {
+                    ret.push({
+                        name: resource,
+                        amount: 0
+                    })
+                }
+                return ret
+            },
+
+            discoveredResourcesInfos: function () {
                 return this.planet
                     ? this.populatePlanetInfoSectionItemsFromObject(this.planet.discoveredResources)
                     : []
             },
 
-            planetResourcesInfos: function() {
+            planetResourcesInfos: function () {
                 return this.planet
                     ? this.populatePlanetInfoSectionItemsFromObject(this.planet.planetResources)
                     : []
             },
 
-            playerResourcesInfos: function() {
+            playerResourcesInfos: function () {
                 return this.planet
                     ? this.populatePlanetInfoSectionItemsFromObject(this.planet.playerResources)
                     : []
             },
 
-            statsInfos: function() {
+            statsInfos: function () {
                 return this.planet
                     ? this.populatePlanetInfoSectionItemsFromObject(this.planet.stats)
                     : []
             },
 
-            planet: function() {
+            planet: function () {
                 return store.getters.getPlanet
             }
         },
@@ -83,7 +105,7 @@
             }
         },
 
-        created () {
+        created() {
             this.getActivePlanet()
         }
     }

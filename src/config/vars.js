@@ -13,3 +13,5 @@ exports.config.radarObjects = 'radarObjects'
 exports.config.excavationObjects = 'excavationObjects'
 exports.config.wasteCleaningObjects = 'wasteCleaningObjects'
 exports.config.pollutionCleaningObjects = 'pollutionCleaningObjects'
+
+exports.manualResources = ['wood', 'coal', 'iron', 'copper', 'stone', 'cog', 'pipe', 'wire', 'rod', 'greenChip']

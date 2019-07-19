@@ -1,12 +1,12 @@
 <template>
-    <div class="resource-panel">
+    <div class="resource-panel px-3">
         <v-btn
                 v-for="resource in resources"
                 :key="resource.name"
                 :color="color"
-                class="mt-1 py-1 px-3"
+                class="mt-1 py-1"
         >
-            {{ resource.name }} - test
+            {{ resource.name }} - {{ resource.amount }}
         </v-btn>
     </div>
 </template>
