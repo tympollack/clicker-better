@@ -1,5 +1,5 @@
 <template>
-    <div class="planet-info pr-3">
+    <div>
         <p>{{ title }}</p>
         <planet-info-item
                 v-for="item in items"
@@ -28,14 +28,3 @@
         }
     }
 </script>
-
-<style scoped>
-    .planet-info {
-        display: inline-block;
-        width: 250px;
-        border: 1px dotted cornflowerblue;
-        vertical-align: top;
-        height: 30%;
-        overflow-y: auto;
-    }
-</style>

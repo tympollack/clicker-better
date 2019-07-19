@@ -12,26 +12,34 @@
         <v-layout fill-height>
             <v-flex xs3>
                 <resource-panel
-                        color="success"
                         :resources="manualResources"
+                        @click="addToResource"
                 ></resource-panel>
             </v-flex>
 
             <v-flex xs9>
-                <planet-info-section
-                        title="stats"
-                        :items="statsInfos"
-                ></planet-info-section>
+                <v-layout>
+                    <v-flex xs4>
+                        <planet-info-section
+                                title="stats"
+                                :items="statsInfos"
+                        ></planet-info-section>
+                    </v-flex>
 
-                <planet-info-section
-                        title="discovered resources"
-                        :items="discoveredResourcesInfos"
-                ></planet-info-section>
+                    <v-flex xs4>
+                        <planet-info-section
+                                title="discovered resources"
+                                :items="discoveredResourcesInfos"
+                        ></planet-info-section>
+                    </v-flex>
 
-                <planet-info-section
-                        title="planetary resources"
-                        :items="planetResourcesInfos"
-                ></planet-info-section>
+                    <v-flex xs4>
+                        <planet-info-section
+                                title="planetary resources"
+                                :items="planetResourcesInfos"
+                        ></planet-info-section>
+                    </v-flex>
+                </v-layout>
             </v-flex>
         </v-layout>
 
@@ -55,7 +63,8 @@
                 for (const resource of manualResources) {
                     ret.push({
                         name: resource,
-                        amount: 0
+                        amount: 0,
+                        productionAmount: 0
                     })
                 }
                 return ret
@@ -102,6 +111,10 @@
                 }
 
                 return infos
+            },
+
+            addToResource: function(resource) {
+
             }
         },
 

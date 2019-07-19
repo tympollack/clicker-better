@@ -23,7 +23,7 @@ const getSavedValue = (key) => {
     return isNullUndefined(val) ? null : JSON.parse(val)
 }
 
-module.exports = {
+export {
     roundTo,
     isNullUndefined,
     getSavedValue
