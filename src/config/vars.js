@@ -15,6 +15,8 @@ exports.config.wasteCleaningObjects = 'wasteCleaningObjects'
 exports.config.pollutionCleaningObjects = 'pollutionCleaningObjects'
 
 exports.manualResources = ['wood', 'coal', 'iron', 'copper', 'stone']
+exports.automatedResources = ['oil', 'uranium', 'water']
+exports.manualProducts = ['cog', 'pipe', 'wire', 'rod', 'greenChip']
 
 exports.functions = {}
 exports.functions.test = 'test'
