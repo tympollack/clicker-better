@@ -134,5 +134,6 @@ export {
     getUsers,
     getActivePlanetForUser,
     getUserPlanets,
+    getUserById,
     createBuildingObjectsInFs
 }

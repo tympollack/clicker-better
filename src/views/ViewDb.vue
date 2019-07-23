@@ -138,7 +138,8 @@
             ...mapActions({
                 refreshConfig: 'refreshConfig',
                 refreshPlanets: 'refreshPlanets',
-                refreshUsers: 'refreshUsers'
+                refreshUsers: 'refreshUsers',
+                refreshUser: 'refreshUser'
             })
         },
 
@@ -146,6 +147,10 @@
             if (!store.getters.getConfig.length) this.refreshConfig()
             if (!store.getters.getPlanets.length) this.refreshPlanets()
             if (!store.getters.getUsers.length) this.refreshUsers()
+        },
+
+        mounted() {
+            this.refreshUser()
         }
     }
 </script>

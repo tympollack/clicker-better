@@ -14,4 +14,8 @@ exports.config.excavationObjects = 'excavationObjects'
 exports.config.wasteCleaningObjects = 'wasteCleaningObjects'
 exports.config.pollutionCleaningObjects = 'pollutionCleaningObjects'
 
-exports.manualResources = ['wood', 'coal', 'iron', 'copper', 'stone', 'cog', 'pipe', 'wire', 'rod', 'greenChip']
+exports.manualResources = ['wood', 'coal', 'iron', 'copper', 'stone']
+
+exports.functions = {}
+exports.functions.test = 'test'
+exports.functions.resourceClick = 'resourceClick'

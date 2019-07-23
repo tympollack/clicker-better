@@ -13,7 +13,7 @@
             <v-flex xs3>
                 <resource-panel
                         :resources="manualResources"
-                        @click="addToResource"
+                        @click="resourceClick"
                 ></resource-panel>
             </v-flex>
 
@@ -58,12 +58,13 @@
         name: 'view-planet',
 
         computed: {
-            manualResources: () => {
+            manualResources: function() {
                 const ret = []
+                const userPlanetRss = this.user.resources[this.planet.id]
                 for (const resource of manualResources) {
                     ret.push({
                         name: resource,
-                        amount: 0,
+                        amount: userPlanetRss[resource],
                         productionAmount: 0
                     })
                 }
@@ -96,13 +97,27 @@
 
             planet: function () {
                 return store.getters.getPlanet
+            },
+
+            user: () => {
+                return store.getters.getUser
             }
         },
 
         methods: {
             ...mapActions({
-                getActivePlanet: 'getActivePlanet'
+                getActivePlanet: 'getActivePlanet',
+                refreshUser: 'refreshUser',
+                testresourceClick: 'resourceClick'
             }),
+
+            resourceClick: function(rss) {
+                // db update
+                this.testresourceClick(rss)
+
+                // real-time update
+                this.user.resources[this.planet.id][rss] += this.user.stats.resourceGainByHand
+            },
 
             populatePlanetInfoSectionItemsFromObject: (obj) => {
                 const infos = []
@@ -111,15 +126,12 @@
                 }
 
                 return infos
-            },
-
-            addToResource: function(resource) {
-
             }
         },
 
-        created() {
-            this.getActivePlanet()
+        mounted: async function() {
+            await this.getActivePlanet()
+            await this.refreshUser()
         }
     }
 </script>
